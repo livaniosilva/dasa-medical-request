@@ -1,0 +1,13 @@
+package br.org.livanio;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MedicalRequestApiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MedicalRequestApiApplication.class, args);
+	}
+
+}
