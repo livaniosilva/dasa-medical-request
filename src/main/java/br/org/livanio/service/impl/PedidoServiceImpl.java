@@ -95,4 +95,33 @@ public class PedidoServiceImpl implements PedidoService {
         }
         return null;
     }
+    @Override
+    public boolean update(Long id, Pedido pedido) {
+        try {
+            Pedido pedidoToUpdate = this.findById(id);
+            if (pedidoToUpdate != null) {
+                pedidoToUpdate.setPaciente(pedido.getPaciente());
+                pedidoToUpdate.setMedico(pedido.getMedico());
+                pedidoToUpdate.setExame(pedido.getExame());
+                pedidoToUpdate.setDataValidade(pedido.getDataValidade());
+
+                pedidoRepository.save(pedidoToUpdate);
+                return true;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MedicoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    @Override
+    public boolean delete(Long id) {
+        try {
+            Pedido pedidoToDelete = this.findById(id);
+            pedidoRepository.delete(pedidoToDelete);
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(MedicoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

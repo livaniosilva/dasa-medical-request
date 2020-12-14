@@ -1,6 +1,5 @@
 package br.org.livanio.controller;
 
-import br.org.livanio.entity.Medico;
 import br.org.livanio.entity.Pedido;
 import br.org.livanio.parameter.PedidoParameter;
 import br.org.livanio.service.PedidoService;
@@ -53,6 +52,27 @@ public class PedidoController {
             return new ResponseEntity<>(pedido, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @ApiOperation(value = "Exclui medido", tags = "Pedido")
+    @DeleteMapping("/pedido/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        boolean pedidoToDelete = pedidoService.delete(id);
+        if (pedidoToDelete) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @ApiOperation(value = "Aatualiza dados do pedido", tags = "Pedido")
+    @PutMapping("/pedido/{id}")
+    public ResponseEntity update(@PathVariable(value = "id") Long id, @Valid @RequestBody PedidoParameter parameter) {
+        boolean pedidoToUpdate = pedidoService.update(id, parameter.toModel());
+        if (pedidoToUpdate) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

@@ -70,13 +70,12 @@ public class MedicoServiceImpl implements MedicoService {
         try {
             Medico medicoToUpdate = this.findById(id);
             if (medicoToUpdate != null) {
-                Medico medicoUpdated = new Medico();
-                medicoUpdated.setUfConselho(medicoToUpdate.getUfConselho());
-                medicoUpdated.setTipoConselho(medicoToUpdate.getTipoConselho());
-                medicoUpdated.setConselho(medicoToUpdate.getConselho());
-                medicoUpdated.setNome(medicoToUpdate.getNome());
+                medicoToUpdate.setUfConselho(medico.getUfConselho());
+                medicoToUpdate.setTipoConselho(medico.getTipoConselho());
+                medicoToUpdate.setConselho(medico.getConselho());
+                medicoToUpdate.setNome(medico.getNome());
 
-                medicoRepository.save(medico);
+                medicoRepository.save(medicoToUpdate);
                 return true;
             }
         } catch (Exception ex) {
