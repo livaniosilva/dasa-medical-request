@@ -54,7 +54,7 @@ public class PedidoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @ApiOperation(value = "Exclui medido", tags = "Pedido")
+    @ApiOperation(value = "Exclui pedido", tags = "Pedido")
     @DeleteMapping("/pedido/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         boolean pedidoToDelete = pedidoService.delete(id);
