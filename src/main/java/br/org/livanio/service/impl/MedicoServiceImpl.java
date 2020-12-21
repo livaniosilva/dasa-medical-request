@@ -47,12 +47,12 @@ public class MedicoServiceImpl implements MedicoService {
     public List<Medico> findAll() {
         List<Medico> listaMedico = new ArrayList<>();
         try {
-            medicoRepository.findAll().forEach(e -> listaMedico.add(e));
+            listaMedico.addAll(medicoRepository.findAll());
             return listaMedico;
         } catch (Exception ex) {
             Logger.getLogger(MedicoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return listaMedico;
     }
 
     @Override
@@ -108,6 +108,6 @@ public class MedicoServiceImpl implements MedicoService {
         } catch (Exception ex) {
             Logger.getLogger(MedicoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return Optional.empty();
     }
 }

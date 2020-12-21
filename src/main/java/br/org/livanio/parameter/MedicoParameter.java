@@ -19,7 +19,6 @@ public class MedicoParameter {
     public Medico toModel(){
         Medico medico = new Medico();
 
-        /** PREEHCIMENTO DOS DADOS DO MÉDICO NO PEDIDO*/
         medico.setConselho(this.conselho);
         medico.setTipoConselho(this.tipoCOnselho);
         medico.setUfConselho(this.ufConselho);

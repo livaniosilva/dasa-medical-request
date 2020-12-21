@@ -1,13 +1,15 @@
 package br.org.livanio.parameter;
 
-import br.org.livanio.entity.*;
+import br.org.livanio.entity.Contato;
+import br.org.livanio.entity.Documento;
+import br.org.livanio.entity.Endereco;
+import br.org.livanio.entity.Paciente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -25,16 +27,13 @@ public class PacienteParameter {
     public Paciente toModel(){
         Paciente paciente = new Paciente();
 
-        /** PREEHCIMENTO DOS DADOS DO PACIENTE NO PEDIDO*/
         paciente.setNome(this.nome);
         paciente.setDataNascimento(this.dataNascimento);
         paciente.setSexo(this.sexo);
         paciente.setNomeMae(this.nomeMae);
 
-        /** PREEHCIMENTO DO CONTATO DO PACIENTE NO PEDIDO*/
         paciente.setContato(this.contato);
 
-        /** PREEHCIMENTO DO ENDEREÇO DO PACIENTE NO PEDIDO*/
         paciente.setEndereco(this.endereco);
 
         paciente.setDocumento(this.documento);

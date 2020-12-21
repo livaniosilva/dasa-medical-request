@@ -45,30 +45,30 @@ public class PacienteController {
 
     @ApiOperation(value = "Aatualiza dados do paciente", tags = "Paciente")
     @PutMapping("/paciente/{id}")
-    public ResponseEntity update(@PathVariable(value = "id") Long id, @Valid @RequestBody PacienteParameter parameter) {
+    public ResponseEntity<Paciente> update(@PathVariable(value = "id") Long id, @Valid @RequestBody PacienteParameter parameter) {
         boolean pacienteToUpdate = pacienteService.update(id, parameter.toModel());
         if (pacienteToUpdate) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @ApiOperation(value = "Exclui paciente", tags = "Paciente")
     @ResponseBody
     @DeleteMapping("/paciente/{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Paciente> delete(@PathVariable(value = "id") Long id) {
         boolean pacienteToDelete = pacienteService.delete(id);
         if (pacienteToDelete) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
     @ApiOperation(value="Recupera Paciente por id", tags = "Paciente")
     @ResponseBody
     @GetMapping("/paciente/{id}")
-    public ResponseEntity<Paciente> getById(@PathVariable(value = "id") Long id) throws Exception {
+    public ResponseEntity<Paciente> getById(@PathVariable(value = "id") Long id) {
         Paciente paciente = pacienteService.findById(id);
         if (paciente != null) {
             return new ResponseEntity<>(paciente, HttpStatus.OK);

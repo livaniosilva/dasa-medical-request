@@ -45,12 +45,12 @@ public class PacienteServiceImpl implements PacienteService {
     public List<Paciente> findAll() {
         List<Paciente> listapaciente = new ArrayList<>();
         try {
-            pacienteRepository.findAll().forEach(e -> listapaciente.add(e));
+            pacienteRepository.findAll().forEach(listapaciente::add);
             return listapaciente;
         } catch (Exception ex) {
             Logger.getLogger(PacienteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return listapaciente;
     }
 
     @Override

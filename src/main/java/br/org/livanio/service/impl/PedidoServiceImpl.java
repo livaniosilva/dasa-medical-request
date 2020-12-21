@@ -31,27 +31,21 @@ public class PedidoServiceImpl implements PedidoService {
         Paciente pacienteNovo = null;
 
         if (pedidoEntrada.getPaciente() != null && pedidoEntrada.getExame() != null && pedidoEntrada.getMedico() != null) {
+            try {
 
             Medico medicoEntrada = pedidoEntrada.getMedico();
             Optional<Medico> medicoDuplicado = Optional.ofNullable(medicoRepository.findByConselho(medicoEntrada.getConselho()));
             Paciente pacienteEntrada = pedidoEntrada.getPaciente();
             Optional<Paciente> pacientDuplicado = Optional.ofNullable(pacienteRepository.findByDocumento(pacienteEntrada.getDocumento()));
 
-            try {
-                if (medicoDuplicado.isPresent()) {
-                    Logger.getLogger(PedidoServiceImpl.class.getName()).log(Level.SEVERE, "This CRM already  exist", medicoEntrada.getConselho());
-                } else {
+                if (!medicoDuplicado.isPresent()) {
                     medicoNovo = medicoRepository.save(medicoEntrada);
                 }
-                if (pacientDuplicado.isPresent()) {
-                    Logger.getLogger(PedidoServiceImpl.class.getName()).log(Level.SEVERE, "This id already  exist", pedidoEntrada.getId());
-                } else {
+                if (!pacientDuplicado.isPresent()) {
                     pacienteNovo = pacienteRepository.save(pacienteEntrada);
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(PedidoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
+
+
                 if (medicoNovo != null) {
                     pedidoEntrada.setMedico(medicoNovo);
                 } else {
@@ -62,9 +56,7 @@ public class PedidoServiceImpl implements PedidoService {
                 } else {
                     pedidoEntrada.setPaciente(pacientDuplicado.orElse(null));
                 }
-                Pedido pedido = pedidoRepository.save(pedidoEntrada);
-                return pedido;
-
+                return pedidoRepository.save(pedidoEntrada);
 
             } catch (Exception ex) {
                 Logger.getLogger(PedidoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,13 +69,13 @@ public class PedidoServiceImpl implements PedidoService {
     public List<Pedido> findAll() {
         List<Pedido> listaPedido = new ArrayList<>();
         try {
-            pedidoRepository.findAll().forEach(listaPedido::add);
+            listaPedido.addAll(pedidoRepository.findAll());
             return listaPedido;
 
         } catch (Exception ex) {
             Logger.getLogger(PedidoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return listaPedido;
     }
 
     @Override

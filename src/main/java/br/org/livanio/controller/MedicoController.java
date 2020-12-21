@@ -46,30 +46,30 @@ public class MedicoController {
 
     @ApiOperation(value = "Aatualiza dados do médico", tags = "Médico")
     @PutMapping("/medico/{id}")
-    public ResponseEntity update(@PathVariable(value = "id") Long id, @Valid @RequestBody MedicoParameter parameter) {
+    public ResponseEntity<Medico> update(@PathVariable(value = "id") Long id, @Valid @RequestBody MedicoParameter parameter) {
         boolean medicoToUpdate = medicoService.update(id, parameter.toModel());
         if (medicoToUpdate) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @ApiOperation(value = "Exclui médico", tags = "Médico")
     @DeleteMapping("/medico/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<Medico> delete(@PathVariable Long id) {
         boolean medicoToDelete = medicoService.delete(id);
         if (medicoToDelete) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @ApiOperation(value = "Recupera Médico por id", tags = "Médico")
     @ResponseBody
     @GetMapping("/medico/{id}")
-    public ResponseEntity<Medico> getById(@PathVariable(value = "id") Long id) throws Exception {
+    public ResponseEntity<Medico> getById(@PathVariable(value = "id") Long id) {
         Medico medico = medicoService.findById(id);
         if (medico != null) {
             return new ResponseEntity<>(medico, HttpStatus.OK);
@@ -81,7 +81,7 @@ public class MedicoController {
     @ApiOperation(value = "Recupera Médico por CRM", tags = "Médico")
     @ResponseBody
     @GetMapping("/medico/{crm}")
-    public ResponseEntity<Medico> getByCRM(@PathVariable(value = "crm") Long crm) throws Exception {
+    public ResponseEntity<Medico> getByCRM(@PathVariable(value = "crm") Long crm) {
         Medico medico = medicoService.findByConselho(crm).orElse(null);
         if (medico != null) {
             return new ResponseEntity<>(medico, HttpStatus.OK);

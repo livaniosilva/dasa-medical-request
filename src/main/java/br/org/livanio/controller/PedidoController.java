@@ -37,7 +37,7 @@ public class PedidoController {
     @GetMapping("/pedido")
     public ResponseEntity<List<Pedido>> getAll() {
         List<Pedido> list = pedidoService.findAll();
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class PedidoController {
     @ApiOperation(value="Recupera pedidos por id", tags = "Pedido")
     @ResponseBody
     @GetMapping("/pedido/{id}")
-    public ResponseEntity<Pedido> getById(@PathVariable(value = "id") Long id) throws Exception {
+    public ResponseEntity<Pedido> getById(@PathVariable(value = "id") Long id) {
         Pedido pedido = pedidoService.findById(id);
         if (pedido != null) {
             return new ResponseEntity<>(pedido, HttpStatus.OK);
@@ -56,23 +56,23 @@ public class PedidoController {
     }
     @ApiOperation(value = "Exclui pedido", tags = "Pedido")
     @DeleteMapping("/pedido/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<Pedido> delete(@PathVariable Long id) {
         boolean pedidoToDelete = pedidoService.delete(id);
         if (pedidoToDelete) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @ApiOperation(value = "Aatualiza dados do pedido", tags = "Pedido")
     @PutMapping("/pedido/{id}")
-    public ResponseEntity update(@PathVariable(value = "id") Long id, @Valid @RequestBody PedidoParameter parameter) {
+    public ResponseEntity<Pedido> update(@PathVariable(value = "id") Long id, @Valid @RequestBody PedidoParameter parameter) {
         boolean pedidoToUpdate = pedidoService.update(id, parameter.toModel());
         if (pedidoToUpdate) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }
