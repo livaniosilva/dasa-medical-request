@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,29 +24,33 @@ import java.util.logging.Logger;
 public class PacienteServiceImpl implements PacienteService {
     @Autowired
     PacienteRepository pacienteRepository;
+    @Autowired
+    Paciente paciente;
 
     @Override
     public Paciente save(Paciente paciente) {
+        Paciente pacienteNovo = new Paciente();
         try {
             if (paciente != null) {
-                Optional<Paciente> pacienteDuplicado = Optional.ofNullable(this.findById(paciente.getId()));
+                Optional<Optional<Paciente>> pacienteDuplicado = Optional.ofNullable(this.findById(paciente.getId()));
                 if (pacienteDuplicado.isPresent()) {
                     throw new NotFoundException("paciente existe na base" + (paciente.getId()));
                 } else {
-                    return pacienteRepository.save(paciente);
+                    pacienteNovo =  pacienteRepository.save(paciente);
+                    return pacienteNovo;
                 }
             }
         } catch (Exception ex) {
             Logger.getLogger(PacienteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return pacienteNovo;
     }
 
     @Override
     public List<Paciente> findAll() {
         List<Paciente> listapaciente = new ArrayList<>();
         try {
-            pacienteRepository.findAll().forEach(listapaciente::add);
+            listapaciente.addAll(pacienteRepository.findAll());
             return listapaciente;
         } catch (Exception ex) {
             Logger.getLogger(PacienteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,20 +59,22 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Override
-    public Paciente findById(Long id) {
+    public Optional<Paciente> findById(Long id) {
         try {
-            return pacienteRepository.findById(id).orElse(null);
+            paciente =  pacienteRepository.findById(id).orElse(null);
+            return Optional.of(Objects.requireNonNull(paciente));
         } catch (Exception ex) {
             Logger.getLogger(PacienteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public boolean update(Long id, Paciente paciente) {
         try {
-            Paciente pacienteToUpdate = this.findById(id);
-            if (pacienteToUpdate != null) {
+            Optional<Paciente> pacienteOptional = this.findById(id);
+            if (pacienteOptional.isPresent()) {
+                Paciente pacienteToUpdate = pacienteOptional.get();
                 pacienteToUpdate.setNome(paciente.getNome());
                 pacienteToUpdate.setNomeMae(paciente.getNomeMae());
                 pacienteToUpdate.setSexo(paciente.getSexo());
@@ -87,8 +94,11 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public boolean delete(Long id) {
         try {
-            Paciente pacienteToDelete = this.findById(id);
-            pacienteRepository.delete(pacienteToDelete);
+            Optional<Paciente> pacienteOptional = this.findById(id);
+            if (pacienteOptional.isPresent()){
+                Paciente pacienteToDelete = pacienteOptional.get();
+                pacienteRepository.delete(pacienteToDelete);
+            }
             return true;
         } catch (Exception ex) {
             Logger.getLogger(PacienteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);

@@ -24,11 +24,13 @@ public class PedidoServiceImpl implements PedidoService {
     MedicoRepository medicoRepository;
     @Autowired
     PacienteRepository pacienteRepository;
+    @Autowired
+    Medico medicoNovo;
+    @Autowired
+    Paciente pacienteNovo;
 
     @Override
     public Pedido save(Pedido pedidoEntrada) {
-        Medico medicoNovo = null;
-        Paciente pacienteNovo = null;
 
         if (pedidoEntrada.getPaciente() != null && pedidoEntrada.getExame() != null && pedidoEntrada.getMedico() != null) {
             try {
@@ -74,12 +76,14 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido findById(Long id) {
+        Pedido pedido = new Pedido();
         try {
-            return pedidoRepository.findById(id).orElse(null);
+            pedido = pedidoRepository.findById(id).orElse(null);
+            return pedido;
         } catch (Exception ex) {
             Logger.getLogger(PedidoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return pedido;
     }
 
     @Override

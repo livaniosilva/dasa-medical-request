@@ -57,12 +57,14 @@ public class MedicoServiceImpl implements MedicoService {
 
     @Override
     public Medico findById(Long id) {
+        Medico medico = new Medico();
         try {
-            return medicoRepository.findById(id).orElse(null);
+            medico =  medicoRepository.findById(id).orElse(null);
+            return  medico;
         } catch (Exception ex) {
             Logger.getLogger(MedicoServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return medico;
     }
 
     @Override
