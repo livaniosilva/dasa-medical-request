@@ -33,25 +33,19 @@ public class PedidoServiceImpl implements PedidoService {
         if (pedidoEntrada.getPaciente() != null && pedidoEntrada.getExame() != null && pedidoEntrada.getMedico() != null) {
             try {
 
-            Medico medicoEntrada = pedidoEntrada.getMedico();
-            Optional<Medico> medicoDuplicado = Optional.ofNullable(medicoRepository.findByConselho(medicoEntrada.getConselho()));
-            Paciente pacienteEntrada = pedidoEntrada.getPaciente();
-            Optional<Paciente> pacientDuplicado = Optional.ofNullable(pacienteRepository.findByDocumento(pacienteEntrada.getDocumento()));
+                Medico medicoEntrada = pedidoEntrada.getMedico();
+                Optional<Medico> medicoDuplicado = Optional.ofNullable(medicoRepository.findByConselho(medicoEntrada.getConselho()));
+                Paciente pacienteEntrada = pedidoEntrada.getPaciente();
+                Optional<Paciente> pacientDuplicado = Optional.ofNullable(pacienteRepository.findByDocumento(pacienteEntrada.getDocumento()));
 
                 if (!medicoDuplicado.isPresent()) {
                     medicoNovo = medicoRepository.save(medicoEntrada);
-                }
-                if (!pacientDuplicado.isPresent()) {
-                    pacienteNovo = pacienteRepository.save(pacienteEntrada);
-                }
-
-
-                if (medicoNovo != null) {
                     pedidoEntrada.setMedico(medicoNovo);
                 } else {
                     pedidoEntrada.setMedico(medicoDuplicado.orElse(null));
                 }
-                if (pacienteNovo != null) {
+                if (!pacientDuplicado.isPresent()) {
+                    pacienteNovo = pacienteRepository.save(pacienteEntrada);
                     pedidoEntrada.setPaciente(pacienteNovo);
                 } else {
                     pedidoEntrada.setPaciente(pacientDuplicado.orElse(null));
@@ -87,6 +81,7 @@ public class PedidoServiceImpl implements PedidoService {
         }
         return null;
     }
+
     @Override
     public boolean update(Long id, Pedido pedido) {
         try {
@@ -105,6 +100,7 @@ public class PedidoServiceImpl implements PedidoService {
         }
         return false;
     }
+
     @Override
     public boolean delete(Long id) {
         try {
